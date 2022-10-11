@@ -25,17 +25,18 @@ func WFile() string {
 	return text
 }
 
-func Grab() <-chan string { //функция вернет канал, из которого мы будем читать данные типа string
+func Grab() <-chan string { //string
 	c := make(chan string)
 	go func() {
-		for { //в вечном цикле собираем данные
+		for {
 			doc, err := goquery.NewDocumentFromReader(strings.NewReader(WFile()))
 			if err == nil {
-				if s := strings.TrimSpace(doc.Find(".iva-item-titleStep-pdebR").Text()); s != "" {
-					c <- s //и отправляем их в канал
+				if s := doc.Find(".iva-item-titleStep-pdebR > a").Text(); s != "" {
+					fmt.Printf("%#v\n\n", s)
+					c <- s //запись в канал
 				}
 			}
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(10 * time.Millisecond)
 		}
 
 	}()
