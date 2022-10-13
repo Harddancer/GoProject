@@ -31,10 +31,15 @@ func Grab() <-chan string { //string
 		for {
 			doc, err := goquery.NewDocumentFromReader(strings.NewReader(WFile()))
 			if err == nil {
-				if s := doc.Find(".iva-item-titleStep-pdebR > a").Text(); s != "" {
-					fmt.Printf("%#v\n\n", s)
-					c <- s //запись в канал
-				}
+				var sp string
+				doc.Find(".iva-item-titleStep-pdebR>a").Each(func(i int, s *goquery.Selection) {
+					//fmt.Println(s.Attr("title"))
+					p, _ := s.Attr("title")
+					sp = fmt.Sprintf("%s///%s", sp, p)
+
+				})
+				c <- sp //запись в канал
+
 			}
 			time.Sleep(10 * time.Millisecond)
 		}

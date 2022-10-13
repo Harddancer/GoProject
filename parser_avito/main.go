@@ -11,8 +11,9 @@ func main() {
 
 	channel := paser.Grab()
 	s := <-channel
+
 	var auto Avto
-	ch := strings.Split(s, ",")
+	ch := strings.Split(s, "///")
 	auto.Printing(ch)
 
 }
@@ -22,27 +23,33 @@ type Avto struct {
 	vendor string
 	model  string
 	year   string
+	price  string
 }
 
 func (a *Avto) Printing(ch []string) {
 	for i, v := range ch {
-
-		re := regexp.MustCompile("[0-9]+")
-		y := strings.Join(re.FindAllString(v, 1), "")
+		// fmt.Println(v)
+		re := regexp.MustCompile("[0-9]{4}")
+		y := strings.Join(re.FindAllString(v, 1), " ")
 		a.number = i
 		a.year = y
 
-		re2 := regexp.MustCompile("[a-zA-Z]+\\s")
+		re2 := regexp.MustCompile("^\\S+")
 		vend := strings.Join(re2.FindAllString(v, 1), "")
 		a.vendor = vend
 
 		v = strings.TrimPrefix(v, " ")
 
-		re3 := regexp.MustCompile("\\s+[a-x,A-Z,а-я,0-9,-,()]+")
+		re3 := regexp.MustCompile("\\s\\w+\\,[\\s]")
 		mod := strings.Join(re3.FindAllString(v, 1), "")
 		a.model = mod
 
-		fmt.Println(a.number, a.year, a.vendor, a.model)
+		re4 := regexp.MustCompile("а\\s(.*?\\.)")
+		pr := strings.Join(re4.FindAllString(v, 1), "")
+		a.price = pr
+
+		fmt.Println(a.number, a.year, a.vendor, a.model, a.price)
+
 	}
 
 }
