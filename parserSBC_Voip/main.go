@@ -6,8 +6,9 @@ import (
 )
 
 func main() {
-	m := workers.Readernioss("nioss.csv")
-	mb, mg := workers.Createdata("sbc.csv", m)
+	m := workers.Readernioss("mrcnioss.csv")
+	mg, mb := workers.Createdata("sbcmrc.txt", m)
 	fmt.Println(workers.Writegoodvoice(mg))
 	fmt.Println(workers.Writebadvoice(mb))
+
 }
