@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"parseravito/paser"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -23,7 +24,7 @@ type Avto struct {
 	vendor string
 	model  string
 	year   string
-	price  string
+	price  int
 }
 
 func (a *Avto) Printing(ch []string) {
@@ -39,6 +40,7 @@ func (a *Avto) Printing(ch []string) {
 		a.vendor = vend
 
 		v = strings.TrimPrefix(v, " ")
+		// fmt.Print(v)
 
 		re3 := regexp.MustCompile("\\s\\w+\\,[\\s]")
 		mod := strings.Join(re3.FindAllString(v, 1), "")
@@ -46,10 +48,18 @@ func (a *Avto) Printing(ch []string) {
 
 		re4 := regexp.MustCompile("а\\s(.*?\\.)")
 		pr := strings.Join(re4.FindAllString(v, 1), "")
-		a.price = pr
+		re4_1 := regexp.MustCompile("(\\d)")
+		pr2 := re4_1.FindAllString(pr, 10)
+		pr3 := strings.Join(pr2, " ")
+		pr4 := strings.Replace(pr3, " ", "", -1)
+		str_number, err := strconv.Atoi(pr4)
+		if err != nil {
+			fmt.Print(err)
+		} else {
+			a.price = str_number
+			fmt.Printf("Номер %d Год выпуска %s Вендор %s Модель %s Цена %d в руб.\n", a.number, a.year, a.vendor, a.model, a.price)
 
-		fmt.Println(a.number, a.year, a.vendor, a.model, a.price)
+		}
 
 	}
-
 }
