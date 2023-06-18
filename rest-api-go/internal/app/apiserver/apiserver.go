@@ -4,12 +4,16 @@ import "fmt"
 
 // Api server
 
-type Apiserver struct{}
+type Apiserver struct {
+	config *Config
+}
 
 // New
-func New() *Apiserver {
+func New(config *Config) *Apiserver {
 	fmt.Println("Done")
-	return &Apiserver{}
+	return &Apiserver{
+		config: config,
+	}
 }
 
 // Start ...
